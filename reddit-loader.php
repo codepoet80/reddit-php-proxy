@@ -7,6 +7,7 @@ if (!strpos($redditUrl, ".json")) {
 header('Content-Type: application/json');
 $result = "";
 $ch = curl_init();
+// If it breaks, try different user agents
 $agent = 'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0';
 curl_setopt($ch, CURLOPT_USERAGENT, $agent);
 curl_setopt($ch, CURLOPT_REFERER, 'https://old.reddit.com/');
