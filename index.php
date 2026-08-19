@@ -23,6 +23,6 @@ if (is_readable($cookies_file)) {
 	curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies_file);
 }
 $result=curl_exec($ch);
-curl_close($ch);
+//curl_close($ch);
 echo $result;
 ?>
