@@ -3,8 +3,15 @@
 // this URL must only expose public, read-only listing pages. Anything
 // identity-specific (/message, /api, /user/*, /prefs, /subreddits/mine) stays
 // unreachable from the open internet.
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
 $sort = '(hot|new|rising|top|controversial|best)';
+// The home feed (/hot/.json and friends) is built from the logged-in account's
+// subscriptions, which are empty, so serve the sitewide /r/popular instead.
+$_SERVER['REQUEST_URI'] = preg_replace_callback(
+	"@^/{$sort}?(?=/?(\.json)?(\?|$))@",
+	fn ($m) => '/r/popular' . (isset($m[1]) && $m[1] !== 'hot' ? "/{$m[1]}" : ''),
+	$_SERVER['REQUEST_URI']
+);
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
 $sub = '[A-Za-z0-9_]{1,30}';
 $id = '[A-Za-z0-9]{1,20}';
 $allowed = [
